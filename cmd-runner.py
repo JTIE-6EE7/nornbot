@@ -26,7 +26,9 @@ def hello_world(task: Task) -> Result:
     Returns:
         Result: Nornir result
     """
-    return Result(host=task.host, result=f"{task.host.name} says hello world, from Nautobot!!")
+    return Result(
+        host=task.host, result=f"{task.host.name} says hello world, from Nautobot!!"
+    )
 
 
 def main():
@@ -42,10 +44,9 @@ def main():
             },
         },
     )
-    
+
     my_nornir.inventory.defaults.username = os.getenv("NORNIR_USERNAME")
     my_nornir.inventory.defaults.password = os.getenv("NORNIR_PASSWORD")
-
 
     print(f"Hosts found: {len(my_nornir.inventory.hosts)}")
     # Print out the keys for the inventory
@@ -53,7 +54,6 @@ def main():
 
     result = my_nornir.run(task=hello_world)
     print_result(result)
-
 
     for nr_host, nr_obj in my_nornir.inventory.hosts.items():
         network_driver = my_nornir.inventory.hosts[nr_host].platform
@@ -68,6 +68,7 @@ def main():
             substitute_lines=None,
         )
         print_result(result)
+
 
 if __name__ == "__main__":
     main()

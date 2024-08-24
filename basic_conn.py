@@ -19,7 +19,9 @@ def hello_world(task: Task) -> Result:
     Returns:
         Result: Nornir result
     """
-    return Result(host=task.host, result=f"{task.host.name} says hello world, from Nautobot!!")
+    return Result(
+        host=task.host, result=f"{task.host.name} says hello world, from Nautobot!!"
+    )
 
 
 def main():
