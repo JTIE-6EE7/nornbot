@@ -4,16 +4,34 @@
 import logging
 import os
 from nornir import InitNornir
-from nornir.core.task import Task, Result
-from nornir_utils.plugins.functions import print_result
-from nornir_nautobot.plugins.tasks.dispatcher import dispatcher
 from nornir_netmiko.tasks import netmiko_send_command
+from pprint import pprint as pp
+
+# from nornir.core.task import Task, Result
+# from nornir_utils.plugins.functions import print_result
+# from nornir_nautobot.plugins.tasks.dispatcher import dispatcher
 
 LOGGER = logging.getLogger(__name__)
 
+
+def collect_info(task):
+
+    arp_list = []
+    cmd = "show ip arp"
+
+    output = task.run(task=netmiko_send_command, use_textfsm=True, command_string=cmd)
+
+    arp_list.append(output.result)
+    task.host["arplist"] = arp_list[0]
+
+    for entry in arp_list[0]:
+        print(f"{task.host} {entry['mac_address']: ^20} {entry['ip_address']} ")
+
+
 def main():
-    """Nornir testing."""
-    my_nornir = InitNornir(
+
+    # Init the Norn!
+    nr = InitNornir(
         inventory={
             "plugin": "NautobotInventory",
             "options": {
@@ -25,19 +43,15 @@ def main():
         },
     )
 
-    my_nornir.inventory.defaults.username = os.getenv("NORNIR_USERNAME")
-    my_nornir.inventory.defaults.password = os.getenv("NORNIR_PASSWORD")
+    # get creds from env variables if not set in inventory
+    if nr.inventory.defaults.username == None:
+        nr.inventory.defaults.username = os.getenv("NORNIR_USERNAME")
 
-    print(f"Hosts found: {len(my_nornir.inventory.hosts)}")
-    # Print out the keys for the inventory
-    print(my_nornir.inventory.hosts.keys())
+    if nr.inventory.defaults.password == None:
+        nr.inventory.defaults.password = os.getenv("NORNIR_PASSWORD")
 
-    cmd = "sh ip arp detail vrf all"
-    for nr_host, nr_obj in my_nornir.inventory.hosts.items():
-        network_driver = my_nornir.inventory.hosts[nr_host].platform
-        output = my_nornir.run(task=netmiko_send_command, use_textfsm=True, command_string=cmd)        
-    
-    print_result(output)
+    # Run the Norn!
+    result = nr.run(task=collect_info)
 
 
 if __name__ == "__main__":
