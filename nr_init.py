@@ -10,7 +10,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 # set Nautobot Location filter (or leave blank for all)
-def nr_init(nb_location=None):
+def nr_init(location_filter=None):
     # Init the Norn!
     nr = InitNornir(
         inventory={
@@ -18,7 +18,7 @@ def nr_init(nb_location=None):
             "options": {
                 "nautobot_url": os.getenv("NAUTOBOT_URL"),
                 "nautobot_token": os.getenv("NAUTBOT_TOKEN"),
-                "filter_parameters": {"location": nb_location},
+                "filter_parameters": {"location": location_filter},
                 "ssl_verify": False,
             },
         },
