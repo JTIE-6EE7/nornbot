@@ -7,9 +7,6 @@ import os
 from nornir import InitNornir
 from nornir.core.task import Result, Task
 
-# Disabling pylint for example
-from nornir_utils.plugins.functions import print_result  # pylint: disable=import-error
-
 
 def hello_world(task: Task) -> Result:
     """Example to show work inside of a task.
