@@ -38,7 +38,9 @@ def main():
     result = nr.run(task=arp_info)
     print()
     # Run the Norn! (MAC tables)
-    result = nr.run(task=collect_info, th_var="mac_list", cmd="show mac address dynamic")
+    result = nr.run(
+        task=collect_info, th_var="mac_list", cmd="show mac address dynamic"
+    )
     result = nr.run(task=mac_info)
 
 

@@ -7,6 +7,7 @@ from nornir import InitNornir
 
 LOGGER = logging.getLogger(__name__)
 
+
 def nr_init(nb_location=None):
     # Init the Norn!
     nr = InitNornir(
@@ -21,14 +22,21 @@ def nr_init(nb_location=None):
         },
     )
 
-    # get creds from env variables if not set in inventory
+    # get creds from env variables or prompts if not set in inventory
     if nr.inventory.defaults.username == None:
-        nr.inventory.defaults.username = os.getenv("NORNIR_USERNAME")
+        if os.getenv("NORNIR_USERNAME"):
+            nr.inventory.defaults.username = os.getenv("NORNIR_USERNAME")
+        else:
+            nr.inventory.defaults.username = input("Username: ")
 
     if nr.inventory.defaults.password == None:
-        nr.inventory.defaults.password = os.getenv("NORNIR_PASSWORD")
+        if os.getenv("NORNIR_PASSWORD"):
+            nr.inventory.defaults.password = os.getenv("NORNIR_PASSWORD")
+        else:
+            nr.inventory.defaults.password = getpass.getpass()
 
     return nr
+
 
 if __name__ == "__main__":
     nr_init()
