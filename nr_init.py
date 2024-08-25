@@ -9,6 +9,7 @@ from nornir import InitNornir
 LOGGER = logging.getLogger(__name__)
 
 
+# set Nautobot Location filter (or leave blank for all)
 def nr_init(nb_location=None):
     # Init the Norn!
     nr = InitNornir(
@@ -36,6 +37,7 @@ def nr_init(nb_location=None):
             nr.inventory.defaults.username = input("Username: ")
             nr.inventory.defaults.password = getpass.getpass()
 
+    # Return the Norn!
     return nr
 
 

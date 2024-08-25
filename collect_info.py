@@ -34,14 +34,16 @@ def main():
     location_filter = ["Lab_A"]
     # Init the Norn!
     nr = nr_init(location_filter)
-    # Run the Norn! (ARP tables)
+    # Run the Norn! (get ARP tables)
     result = nr.run(task=collect_info, th_var="arp_list", cmd="show ip arp")
+    # Run the Norn! (process ARP tables)
     result = nr.run(task=arp_info)
     print()
-    # Run the Norn! (MAC tables)
+    # Run the Norn! (get MAC tables)
     result = nr.run(
         task=collect_info, th_var="mac_list", cmd="show mac address dynamic"
     )
+    # Run the Norn! (process MAC tables)
     result = nr.run(task=mac_info)
 
 
