@@ -5,19 +5,17 @@ from nr_init import nr_init
 from nornir_netmiko.tasks import netmiko_send_command
 
 
-# reusable function for collecting command output and storing it
-def collect_info(task, info, cmd):
-    th_var = info
-    info = []
+# function for collecting parsed command output and storing it
+def collect_info(task, th_var, cmd):
+    # Nornir connects to devices using Netmiko here
     output = task.run(task=netmiko_send_command, use_textfsm=True, command_string=cmd)
-    info.append(output.result)
-    task.host[th_var] = info[0]
+    # add parsed command output to task.host variable
+    task.host[th_var] = output.result
 
 
 # function to parse arp table output
 def arp_info(task):
     for entry in task.host["arp_list"]:
-        # print(entry)
         print(f"{task.host} {entry['mac_address']: ^20} {entry['ip_address']} ")
 
 
@@ -31,14 +29,16 @@ def mac_info(task):
 
 # It's Norn time!
 def main():
+    # set Nautobot Location filter (or leave blank for all)
+    location_filter = ["Lab_A"]
     # Init the Norn!
-    nr = nr_init()
-    # Run the Norn! (ARP)
-    result = nr.run(task=collect_info, info="arp_list", cmd="show ip arp")
+    nr = nr_init(location_filter)
+    # Run the Norn! (ARP tables)
+    result = nr.run(task=collect_info, th_var="arp_list", cmd="show ip arp")
     result = nr.run(task=arp_info)
     print()
-    # Run the Norn! (MAC)
-    result = nr.run(task=collect_info, info="mac_list", cmd="show mac address dynamic")
+    # Run the Norn! (MAC tables)
+    result = nr.run(task=collect_info, th_var="mac_list", cmd="show mac address dynamic")
     result = nr.run(task=mac_info)
 
 

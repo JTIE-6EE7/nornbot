@@ -7,8 +7,7 @@ from nornir import InitNornir
 
 LOGGER = logging.getLogger(__name__)
 
-def nr_init():
-
+def nr_init(nb_location=None):
     # Init the Norn!
     nr = InitNornir(
         inventory={
@@ -16,7 +15,7 @@ def nr_init():
             "options": {
                 "nautobot_url": os.getenv("NAUTOBOT_URL"),
                 "nautobot_token": os.getenv("NAUTBOT_TOKEN"),
-                "filter_parameters": {"location": "Lab_A"},
+                "filter_parameters": {"location": nb_location},
                 "ssl_verify": False,
             },
         },
