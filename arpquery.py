@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # arpquery.py
 
-from nr_init import nr_init
 from nornir_netmiko.tasks import netmiko_send_command
+
+from nr_init import nr_init
 
 
 def collect_info(task):

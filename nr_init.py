@@ -3,6 +3,7 @@
 import getpass
 import logging
 import os
+
 from nornir import InitNornir
 
 LOGGER = logging.getLogger(__name__)
