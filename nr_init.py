@@ -23,17 +23,17 @@ def nr_init(nb_location=None):
         },
     )
 
-    # get creds from env variables or prompts if not set in inventory
-    if nr.inventory.defaults.username == None:
-        if os.getenv("NORNIR_USERNAME"):
-            nr.inventory.defaults.username = os.getenv("NORNIR_USERNAME")
-        else:
-            nr.inventory.defaults.username = input("Username: ")
+    # look for default creds in inventory
+    if nr.inventory.defaults.username == None or nr.inventory.defaults.password == None:
 
-    if nr.inventory.defaults.password == None:
-        if os.getenv("NORNIR_PASSWORD"):
+        # look for creds in environment variables
+        if os.getenv("NORNIR_USERNAME1") and os.getenv("NORNIR_PASSWORD"):
+            nr.inventory.defaults.username = os.getenv("NORNIR_USERNAME")
             nr.inventory.defaults.password = os.getenv("NORNIR_PASSWORD")
+
         else:
+            # prompt for creds
+            nr.inventory.defaults.username = input("Username: ")
             nr.inventory.defaults.password = getpass.getpass()
 
     return nr
