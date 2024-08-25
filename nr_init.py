@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 # nr_init.py
-
+import getpass
 import logging
 import os
 from nornir import InitNornir
-from nornir_netmiko.tasks import netmiko_send_command
 
 LOGGER = logging.getLogger(__name__)
 
