@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""Testing file."""
+# arpquery.py
 
-# pylint: disable=duplicate-code
 import logging
 import os
 from nornir import InitNornir
@@ -10,28 +9,7 @@ from nornir_utils.plugins.functions import print_result
 from nornir_nautobot.plugins.tasks.dispatcher import dispatcher
 from nornir_netmiko.tasks import netmiko_send_command
 
-
-
 LOGGER = logging.getLogger(__name__)
-
-
-# Disabling pylint for example
-from nornir_utils.plugins.functions import print_result  # pylint: disable=import-error
-
-
-def hello_world(task: Task) -> Result:
-    """Example to show work inside of a task.
-
-    Args:
-        task (Task): Nornir Task
-
-    Returns:
-        Result: Nornir result
-    """
-    return Result(
-        host=task.host, result=f"{task.host.name} says hello world, from Nautobot!!"
-    )
-
 
 def main():
     """Nornir testing."""
@@ -54,13 +32,11 @@ def main():
     # Print out the keys for the inventory
     print(my_nornir.inventory.hosts.keys())
 
-
-    cmd = "show ip arp"
+    cmd = "sh ip arp detail vrf all"
     for nr_host, nr_obj in my_nornir.inventory.hosts.items():
         network_driver = my_nornir.inventory.hosts[nr_host].platform
         output = my_nornir.run(task=netmiko_send_command, use_textfsm=True, command_string=cmd)        
     
-        #print(output.values())
     print_result(output)
 
 
