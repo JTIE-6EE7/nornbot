@@ -60,8 +60,8 @@ def main():
         network_driver = my_nornir.inventory.hosts[nr_host].platform
         output = my_nornir.run(task=netmiko_send_command, use_textfsm=True, command_string=cmd)        
     
-        print(output['n9k-core-1'].result)
-    #print_result(result)
+        print(output.keys())
+    print_result(output)
 
 
 if __name__ == "__main__":
